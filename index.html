@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earth Ark Institute</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0e1a;--bg2:#0d1220;--text:#e0e0e0;--text-dim:#8899aa;--text-mute:#556677;
+  --accent:#4a90d9;--accent2:#7b68ee;--gold:#c9a84c;--gold-dim:rgba(201,168,76,0.3);
+  --gradient:linear-gradient(135deg,#4a90d9,#7b68ee);
+  --card-bg:rgba(255,255,255,0.03);--card-border:rgba(255,255,255,0.06);
+}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.3}
+
+/* Navigation */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 3rem;display:flex;justify-content:space-between;align-items:center;background:rgba(10,14,26,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border)}
+.logo{font-size:1.3rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.3s}
+.nav-links a:hover{color:var(--text)}
+
+/* Hero Section */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;padding:0 3rem}
+.hero-content{text-align:center;max-width:900px}
+.hero-tagline{font-size:0.8rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem}
+.hero h1{font-size:clamp(3rem,8vw,6rem);font-weight:300;letter-spacing:0.1em;margin-bottom:1.5rem;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1}
+.hero-sub{font-size:1.2rem;color:var(--text-dim);max-width:600px;margin:0 auto 3rem;line-height:1.8;font-weight:300}
+.hero-cta{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;padding:0.8rem 2.5rem;text-decoration:none;font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;transition:all 0.3s;border-radius:2px}
+.btn-primary{background:var(--gradient);color:#fff;border:none}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(74,144,217,0.3)}
+.btn-outline{border:1px solid var(--card-border);color:var(--text);background:transparent}
+.btn-outline:hover{border-color:var(--accent);background:var(--card-bg)}
+
+/* Methodology Section */
+.method{padding:8rem 3rem;position:relative;z-index:1}
+.section-label{text-align:center;font-size:0.8rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.section-title{text-align:center;font-size:2.5rem;font-weight:300;margin-bottom:4rem;color:var(--text)}
+.method-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;max-width:1000px;margin:0 auto}
+.method-card{background:var(--card-bg);border:1px solid var(--card-border);padding:2.5rem;text-align:center;transition:all 0.3s}
+.method-card:hover{transform:translateY(-5px);border-color:var(--gold-dim);background:rgba(255,255,255,0.05)}
+.method-icon{font-size:2.5rem;margin-bottom:1.5rem;display:block}
+.method-card h3{font-size:1.2rem;margin-bottom:1rem;color:var(--text)}
+.method-card p{color:var(--text-dim);font-size:0.95rem;line-height:1.7}
+
+/* Cases Section */
+.cases{padding:8rem 3rem;position:relative;z-index:1;background:var(--bg2)}
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto}
+.case-card{background:var(--card-bg);border:1px solid var(--card-border);padding:2rem;position:relative;overflow:hidden;transition:all 0.3s}
+.case-card:hover{transform:translateY(-3px);border-color:var(--gold-dim)}
+.case-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);opacity:0;transition:opacity 0.3s}
+.case-card:hover::before{opacity:1}
+.case-num{font-size:0.75rem;color:var(--gold);letter-spacing:0.2em;margin-bottom:0.5rem}
+.case-card h3{font-size:1.1rem;margin-bottom:0.5rem}
+.case-meta{font-size:0.8rem;color:var(--text-mute);margin-bottom:1rem}
+.case-card p{color:var(--text-dim);font-size:0.9rem;line-height:1.6}
+
+/* Values Section */
+.values{padding:8rem 3rem;position:relative;z-index:1}
+.values-list{max-width:700px;margin:0 auto}
+.value-item{display:flex;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--card-border)}
+.value-item:last-child{border-bottom:none}
+.value-num{font-size:2rem;font-weight:200;color:var(--gold);min-width:3rem}
+.value-content h3{font-size:1.1rem;margin-bottom:0.3rem;color:var(--text)}
+.value-content p{color:var(--text-dim);font-size:0.95rem;line-height:1.6}
+
+/* Contact Section */
+.contact{padding:8rem 3rem;position:relative;z-index:1;background:var(--bg2);text-align:center}
+.contact-box{background:var(--card-bg);border:1px solid var(--gold-dim);padding:4rem;max-width:600px;margin:0 auto}
+.contact-box h2{font-size:2rem;margin-bottom:1rem;font-weight:300}
+.contact-box p{color:var(--text-dim);margin-bottom:2rem}
+.contact-email{font-size:1.3rem;color:var(--accent);text-decoration:none;border-bottom:1px solid var(--gold-dim);padding-bottom:0.3rem;transition:all 0.3s}
+.contact-email:hover{color:var(--gold);border-color:var(--gold)}
+
+/* Footer */
+footer{padding:3rem;text-align:center;border-top:1px solid var(--card-border);position:relative;z-index:1}
+footer p{color:var(--text-mute);font-size:0.8rem;letter-spacing:0.1em}
+footer .founded{color:var(--gold);margin-top:0.5rem;font-size:0.75rem;letter-spacing:0.2em}
+
+/* Animations */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeInUp 0.8s ease-out forwards}
+.delay-1{animation-delay:0.2s;opacity:0}
+.delay-2{animation-delay:0.4s;opacity:0}
+.delay-3{animation-delay:0.6s;opacity:0}
+.delay-4{animation-delay:0.8s;opacity:0}
+
+/* Responsive */
+@media(max-width:768px){
+  .nav-links{display:none}
+  nav{padding:1rem 1.5rem}
+  .hero{padding:0 1.5rem}
+  .method,.cases,.values,.contact{padding:4rem 1.5rem}
+  .hero h1{font-size:2.5rem}
+  .method-grid{grid-template-columns:1fr}
+  .cases-grid{grid-template-columns:1fr}
+  .value-item{flex-direction:column;gap:0.5rem}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<nav>
+  <div class="logo">Earth Ark</div>
+  <ul class="nav-links">
+    <li><a href="#methodology">Approach</a></li>
+    <li><a href="#cases">Projects</a></li>
+    <li><a href="#values">Values</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-tagline fade-in">A Non-Profit Initiative</p>
+    <h1 class="fade-in delay-1">Earth Ark Institute</h1>
+    <p class="hero-sub fade-in delay-2">We design and build immersive experiences that bridge the gap between human understanding and the natural world. Through the intersection of ecology, architecture, and technology, we create spaces that inspire stewardship of our planet.</p>
+    <div class="hero-cta fade-in delay-3">
+      <a href="#methodology" class="btn btn-primary">Our Approach</a>
+      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<section class="method" id="methodology">
+  <p class="section-label fade-in">How We Work</p>
+  <h2 class="section-title fade-in delay-1">Content × Space × Technology</h2>
+  <div class="method-grid">
+    <div class="method-card fade-in delay-1">
+      <span class="method-icon">📖</span>
+      <h3>Content</h3>
+      <p>Deep research and narrative development that transforms complex ecological science into compelling stories accessible to all audiences.</p>
+    </div>
+    <div class="method-card fade-in delay-2">
+      <span class="method-icon">🏛</span>
+      <h3>Space</h3>
+      <p>Architectural design and spatial planning that creates immersive environments where visitors can physically engage with scientific concepts.</p>
+    </div>
+    <div class="method-card fade-in delay-3">
+      <span class="method-icon">⚡</span>
+      <h3>Technology</h3>
+      <p>Cutting-edge interactive systems — from RFID tracking to DMX motion control — that create responsive, personalized experiences.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cases" id="cases">
+  <p class="section-label fade-in">Selected Work</p>
+  <h2 class="section-title fade-in delay-1">Immersive Projects</h2>
+  <div class="cases-grid">
+    <div class="case-card fade-in delay-1">
+      <p class="case-num">CASE 01</p>
+      <h3>T.Rex Immersive Exhibition</h3>
+      <p class="case-meta">Beijing · 1000㎡ · 2024</p>
+      <p>An educational journey through the Late Cretaceous period, combining paleontological accuracy with interactive RFID exploration systems for young learners.</p>
+    </div>
+    <div class="case-card fade-in delay-2">
+      <p class="case-num">CASE 02</p>
+      <h3>Deep Sea Ark Program</h3>
+      <p class="case-meta">Shanghai · Multi-site · 2023</p>
+      <p>Underwater ecosystem conservation initiative featuring large-scale immersive installations that simulate deep-sea environments and marine biodiversity.</p>
+    </div>
+    <div class="case-card fade-in delay-3">
+      <p class="case-num">CASE 03</p>
+      <h3>DreamPort Aerospace</h3>
+      <p class="case-meta">Dongguan · 2000㎡ · 2024</p>
+      <p>Self-developed hardware and immersive flight simulation system exploring humanity's relationship with space exploration and aerospace technology.</p>
+    </div>
+    <div class="case-card fade-in delay-4">
+      <p class="case-num">CASE 04</p>
+      <h3>Zhongshan Park Immersive Complex</h3>
+      <p class="case-meta">Shanghai · 5400㎡ · 2025</p>
+      <p>Shanghai 2035 flagship project — a co-investment model with the Changning District government creating a next-generation public cultural space.</p>
+    </div>
+  </div>
+</section>
+
+<section class="values" id="values">
+  <p class="section-label fade-in">Our Values</p>
+  <h2 class="section-title fade-in delay-1">Why We Exist</h2>
+  <div class="values-list">
+    <div class="value-item fade-in delay-1">
+      <span class="value-num">01</span>
+      <div class="value-content">
+        <h3>Stewardship Through Immersion</h3>
+        <p>We believe that direct, embodied experience of natural wonders fosters deeper commitment to conservation than information alone.</p>
+      </div>
+    </div>
+    <div class="value-item fade-in delay-2">
+      <span class="value-num">02</span>
+      <div class="value-content">
+        <h3>Scientific Integrity</h3>
+        <p>Every exhibition is grounded in rigorous research, developed in collaboration with academic institutions including Columbia, MIT Media Lab, and Carnegie Mellon.</p>
+      </div>
+    </div>
+    <div class="value-item fade-in delay-3">
+      <span class="value-num">03</span>
+      <div class="value-content">
+        <h3>Technology as Bridge</h3>
+        <p>We leverage immersive technologies not for spectacle, but as tools to make the invisible visible — from microscopic ecosystems to geological time scales.</p>
+      </div>
+    </div>
+    <div class="value-item fade-in delay-4">
+      <span class="value-num">04</span>
+      <div class="value-content">
+        <h3>Ten-Year Commitment</h3>
+        <p>Earth Ark Institute is not a one-off concept but a decade-long IP initiative by NeXT SCENE. This exhibition is the first ark — many more will follow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-box fade-in">
+    <h2>Start a Conversation</h2>
+    <p>Interested in collaborating on immersive educational experiences? We'd love to hear from you.</p>
+    <a href="mailto:info@eartharkinstitute.org" class="contact-email">info@eartharkinstitute.org</a>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 Earth Ark Institute. All rights reserved.</p>
+  <p class="founded">Founded by NeXT SCENE · 创见未来叙事</p>
+</footer>
+
+<script>
+// Ambient background particles
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.size = Math.random() * 1.5 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.speedY = (Math.random() - 0.5) * 0.3;
+    this.opacity = Math.random() * 0.4 + 0.1;
+    this.hue = Math.random() * 40 + 200; // blue-purple range
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${this.hue}, 60%, 60%, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+function animate() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// Intersection Observer for scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  observer.observe(el);
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+
+</body>
+</html>
