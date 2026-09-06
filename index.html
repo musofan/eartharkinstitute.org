@@ -3,305 +3,308 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Earth Ark Institute</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0a0e1a;--bg2:#0d1220;--text:#e0e0e0;--text-dim:#8899aa;--text-mute:#556677;
-  --accent:#4a90d9;--accent2:#7b68ee;--gold:#c9a84c;--gold-dim:rgba(201,168,76,0.3);
-  --gradient:linear-gradient(135deg,#4a90d9,#7b68ee);
-  --card-bg:rgba(255,255,255,0.03);--card-border:rgba(255,255,255,0.06);
-}
-body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
-canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.3}
-
-/* Navigation */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 3rem;display:flex;justify-content:space-between;align-items:center;background:rgba(10,14,26,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--card-border)}
-.logo{font-size:1.3rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.nav-links{display:flex;gap:2rem;list-style:none}
-.nav-links a{color:var(--text-dim);text-decoration:none;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.3s}
-.nav-links a:hover{color:var(--text)}
-
-/* Hero Section */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;padding:0 3rem}
-.hero-content{text-align:center;max-width:900px}
-.hero-tagline{font-size:0.8rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem}
-.hero h1{font-size:clamp(3rem,8vw,6rem);font-weight:300;letter-spacing:0.1em;margin-bottom:1.5rem;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1}
-.hero-sub{font-size:1.2rem;color:var(--text-dim);max-width:600px;margin:0 auto 3rem;line-height:1.8;font-weight:300}
-.hero-cta{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap}
-.btn{display:inline-block;padding:0.8rem 2.5rem;text-decoration:none;font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;transition:all 0.3s;border-radius:2px}
-.btn-primary{background:var(--gradient);color:#fff;border:none}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(74,144,217,0.3)}
-.btn-outline{border:1px solid var(--card-border);color:var(--text);background:transparent}
-.btn-outline:hover{border-color:var(--accent);background:var(--card-bg)}
-
-/* Methodology Section */
-.method{padding:8rem 3rem;position:relative;z-index:1}
-.section-label{text-align:center;font-size:0.8rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
-.section-title{text-align:center;font-size:2.5rem;font-weight:300;margin-bottom:4rem;color:var(--text)}
-.method-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;max-width:1000px;margin:0 auto}
-.method-card{background:var(--card-bg);border:1px solid var(--card-border);padding:2.5rem;text-align:center;transition:all 0.3s}
-.method-card:hover{transform:translateY(-5px);border-color:var(--gold-dim);background:rgba(255,255,255,0.05)}
-.method-icon{font-size:2.5rem;margin-bottom:1.5rem;display:block}
-.method-card h3{font-size:1.2rem;margin-bottom:1rem;color:var(--text)}
-.method-card p{color:var(--text-dim);font-size:0.95rem;line-height:1.7}
-
-/* Cases Section */
-.cases{padding:8rem 3rem;position:relative;z-index:1;background:var(--bg2)}
-.cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto}
-.case-card{background:var(--card-bg);border:1px solid var(--card-border);padding:2rem;position:relative;overflow:hidden;transition:all 0.3s}
-.case-card:hover{transform:translateY(-3px);border-color:var(--gold-dim)}
-.case-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);opacity:0;transition:opacity 0.3s}
-.case-card:hover::before{opacity:1}
-.case-num{font-size:0.75rem;color:var(--gold);letter-spacing:0.2em;margin-bottom:0.5rem}
-.case-card h3{font-size:1.1rem;margin-bottom:0.5rem}
-.case-meta{font-size:0.8rem;color:var(--text-mute);margin-bottom:1rem}
-.case-card p{color:var(--text-dim);font-size:0.9rem;line-height:1.6}
-
-/* Values Section */
-.values{padding:8rem 3rem;position:relative;z-index:1}
-.values-list{max-width:700px;margin:0 auto}
-.value-item{display:flex;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--card-border)}
-.value-item:last-child{border-bottom:none}
-.value-num{font-size:2rem;font-weight:200;color:var(--gold);min-width:3rem}
-.value-content h3{font-size:1.1rem;margin-bottom:0.3rem;color:var(--text)}
-.value-content p{color:var(--text-dim);font-size:0.95rem;line-height:1.6}
-
-/* Contact Section */
-.contact{padding:8rem 3rem;position:relative;z-index:1;background:var(--bg2);text-align:center}
-.contact-box{background:var(--card-bg);border:1px solid var(--gold-dim);padding:4rem;max-width:600px;margin:0 auto}
-.contact-box h2{font-size:2rem;margin-bottom:1rem;font-weight:300}
-.contact-box p{color:var(--text-dim);margin-bottom:2rem}
-.contact-email{font-size:1.3rem;color:var(--accent);text-decoration:none;border-bottom:1px solid var(--gold-dim);padding-bottom:0.3rem;transition:all 0.3s}
-.contact-email:hover{color:var(--gold);border-color:var(--gold)}
-
-/* Footer */
-footer{padding:3rem;text-align:center;border-top:1px solid var(--card-border);position:relative;z-index:1}
-footer p{color:var(--text-mute);font-size:0.8rem;letter-spacing:0.1em}
-footer .founded{color:var(--gold);margin-top:0.5rem;font-size:0.75rem;letter-spacing:0.2em}
-
-/* Animations */
-@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.fade-in{animation:fadeInUp 0.8s ease-out forwards}
-.delay-1{animation-delay:0.2s;opacity:0}
-.delay-2{animation-delay:0.4s;opacity:0}
-.delay-3{animation-delay:0.6s;opacity:0}
-.delay-4{animation-delay:0.8s;opacity:0}
-
-/* Responsive */
-@media(max-width:768px){
-  .nav-links{display:none}
-  nav{padding:1rem 1.5rem}
-  .hero{padding:0 1.5rem}
-  .method,.cases,.values,.contact{padding:4rem 1.5rem}
-  .hero h1{font-size:2.5rem}
-  .method-grid{grid-template-columns:1fr}
-  .cases-grid{grid-template-columns:1fr}
-  .value-item{flex-direction:column;gap:0.5rem}
-}
-</style>
+<title>Earth Ark Institute — Immersive Conservation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<canvas id="bg"></canvas>
-
-<nav>
-  <div class="logo">Earth Ark</div>
-  <ul class="nav-links">
-    <li><a href="#methodology">Approach</a></li>
-    <li><a href="#cases">Projects</a></li>
-    <li><a href="#values">Values</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+<!-- Navigation -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">EARTH ARK</a>
+    <ul class="nav-links">
+      <li><a href="#mission">Our Mission</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#impact">Impact</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="btn-nav">Get Involved</a></li>
+    </ul>
+  </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-content">
-    <p class="hero-tagline fade-in">A Non-Profit Initiative</p>
-    <h1 class="fade-in delay-1">Earth Ark Institute</h1>
-    <p class="hero-sub fade-in delay-2">We design and build immersive experiences that bridge the gap between human understanding and the natural world. Through the intersection of ecology, architecture, and technology, we create spaces that inspire stewardship of our planet.</p>
-    <div class="hero-cta fade-in delay-3">
-      <a href="#methodology" class="btn btn-primary">Our Approach</a>
-      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="hero-video">
+    <div class="ocean-bg">
+      <div class="ocean-layer layer-1"></div>
+      <div class="ocean-layer layer-2"></div>
+      <div class="ocean-layer layer-3"></div>
+      <canvas id="particles"></canvas>
     </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-label">A Non-Profit Conservation Institute</p>
+      <h1 class="hero-title">Building the Next<br>Gateway to Nature</h1>
+      <p class="hero-desc">We create immersive experiences that connect people with the natural world through science, design, and technology — inspiring stewardship for the planet's most precious ecosystems.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">Explore Our Work</a>
+        <a href="#contact" class="btn btn-ghost">Join Us</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num" data-target="3">0</span><span class="stat-suffix">Flagship</span><span class="stat-label">Projects</span></div>
+        <div class="stat"><span class="stat-num" data-target="8000">0</span><span class="stat-suffix">+㎡</span><span class="stat-label">Immersive Space</span></div>
+        <div class="stat"><span class="stat-num" data-target="150">0</span><span class="stat-suffix">K</span><span class="stat-label">Visitors Reached</span></div>
+      </div>
+    </div>
+    <div class="scroll-hint"><span class="scroll-line"></span></div>
   </div>
 </section>
 
-<section class="method" id="methodology">
-  <p class="section-label fade-in">How We Work</p>
-  <h2 class="section-title fade-in delay-1">Content × Space × Technology</h2>
-  <div class="method-grid">
-    <div class="method-card fade-in delay-1">
-      <span class="method-icon">📖</span>
-      <h3>Content</h3>
-      <p>Deep research and narrative development that transforms complex ecological science into compelling stories accessible to all audiences.</p>
-    </div>
-    <div class="method-card fade-in delay-2">
-      <span class="method-icon">🏛</span>
-      <h3>Space</h3>
-      <p>Architectural design and spatial planning that creates immersive environments where visitors can physically engage with scientific concepts.</p>
-    </div>
-    <div class="method-card fade-in delay-3">
-      <span class="method-icon">⚡</span>
-      <h3>Technology</h3>
-      <p>Cutting-edge interactive systems — from RFID tracking to DMX motion control — that create responsive, personalized experiences.</p>
-    </div>
-  </div>
-</section>
-
-<section class="cases" id="cases">
-  <p class="section-label fade-in">Selected Work</p>
-  <h2 class="section-title fade-in delay-1">Immersive Projects</h2>
-  <div class="cases-grid">
-    <div class="case-card fade-in delay-1">
-      <p class="case-num">CASE 01</p>
-      <h3>T.Rex Immersive Exhibition</h3>
-      <p class="case-meta">Beijing · 1000㎡ · 2024</p>
-      <p>An educational journey through the Late Cretaceous period, combining paleontological accuracy with interactive RFID exploration systems for young learners.</p>
-    </div>
-    <div class="case-card fade-in delay-2">
-      <p class="case-num">CASE 02</p>
-      <h3>Deep Sea Ark Program</h3>
-      <p class="case-meta">Shanghai · Multi-site · 2023</p>
-      <p>Underwater ecosystem conservation initiative featuring large-scale immersive installations that simulate deep-sea environments and marine biodiversity.</p>
-    </div>
-    <div class="case-card fade-in delay-3">
-      <p class="case-num">CASE 03</p>
-      <h3>DreamPort Aerospace</h3>
-      <p class="case-meta">Dongguan · 2000㎡ · 2024</p>
-      <p>Self-developed hardware and immersive flight simulation system exploring humanity's relationship with space exploration and aerospace technology.</p>
-    </div>
-    <div class="case-card fade-in delay-4">
-      <p class="case-num">CASE 04</p>
-      <h3>Zhongshan Park Immersive Complex</h3>
-      <p class="case-meta">Shanghai · 5400㎡ · 2025</p>
-      <p>Shanghai 2035 flagship project — a co-investment model with the Changning District government creating a next-generation public cultural space.</p>
-    </div>
-  </div>
-</section>
-
-<section class="values" id="values">
-  <p class="section-label fade-in">Our Values</p>
-  <h2 class="section-title fade-in delay-1">Why We Exist</h2>
-  <div class="values-list">
-    <div class="value-item fade-in delay-1">
-      <span class="value-num">01</span>
-      <div class="value-content">
-        <h3>Stewardship Through Immersion</h3>
-        <p>We believe that direct, embodied experience of natural wonders fosters deeper commitment to conservation than information alone.</p>
+<!-- Mission Section -->
+<section class="mission" id="mission">
+  <div class="section-container">
+    <div class="mission-grid">
+      <div class="mission-text reveal">
+        <p class="section-label">Our Mission</p>
+        <h2 class="section-title">Conserving the lands,<br>oceans, and stories<br>on which all life depends</h2>
+        <p class="mission-desc">Earth Ark Institute is a non-profit research and experience organization dedicated to making ecological science accessible and emotionally resonant. We design immersive environments where visitors don't just learn about nature — they step into it, feel it, and carry it home.</p>
+        <p class="mission-desc">Our approach combines rigorous scientific research with cutting-edge spatial design and interactive technology, creating experiences that transform knowledge into lasting conservation action.</p>
       </div>
-    </div>
-    <div class="value-item fade-in delay-2">
-      <span class="value-num">02</span>
-      <div class="value-content">
-        <h3>Scientific Integrity</h3>
-        <p>Every exhibition is grounded in rigorous research, developed in collaboration with academic institutions including Columbia, MIT Media Lab, and Carnegie Mellon.</p>
-      </div>
-    </div>
-    <div class="value-item fade-in delay-3">
-      <span class="value-num">03</span>
-      <div class="value-content">
-        <h3>Technology as Bridge</h3>
-        <p>We leverage immersive technologies not for spectacle, but as tools to make the invisible visible — from microscopic ecosystems to geological time scales.</p>
-      </div>
-    </div>
-    <div class="value-item fade-in delay-4">
-      <span class="value-num">04</span>
-      <div class="value-content">
-        <h3>Ten-Year Commitment</h3>
-        <p>Earth Ark Institute is not a one-off concept but a decade-long IP initiative by NeXT SCENE. This exhibition is the first ark — many more will follow.</p>
+      <div class="mission-visual reveal delay-2">
+        <div class="mission-card">
+          <div class="mission-card-img" style="background:linear-gradient(135deg,#072F4F,#1A6796)">
+            <span class="card-icon">🌊</span>
+          </div>
+          <div class="mission-card-body">
+            <h3>Science-Driven</h3>
+            <p>Every project is grounded in peer-reviewed research and developed with academic partners.</p>
+          </div>
+        </div>
+        <div class="mission-card">
+          <div class="mission-card-img" style="background:linear-gradient(135deg,#1A6796,#3E9ACA)">
+            <span class="card-icon">🦖</span>
+          </div>
+          <div class="mission-card-body">
+            <h3>Immersive by Design</h3>
+            <p>We build physical and digital spaces that transform data into embodied experience.</p>
+          </div>
+        </div>
+        <div class="mission-card">
+          <div class="mission-card-img" style="background:linear-gradient(135deg,#224F6D,#3E9ACA)">
+            <span class="card-icon">💡</span>
+          </div>
+          <div class="mission-card-body">
+            <h3>Open & Collaborative</h3>
+            <p>We partner with communities, schools, and governments to maximize impact.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- Projects Section -->
+<section class="projects" id="projects">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <p class="section-label">Our Work</p>
+      <h2 class="section-title">Three Flagship Initiatives</h2>
+      <p class="section-desc">Each project is a self-contained ark — a complete world that invites visitors to explore, discover, and commit to conservation.</p>
+    </div>
+    <div class="projects-list">
+      <!-- Project 1: T.Rex -->
+      <article class="project-card reveal" data-project="trex">
+        <div class="project-img" style="background:linear-gradient(135deg,#072F4F 0%,#1A6796 50%,#224F6D 100%)">
+          <div class="project-img-overlay">
+            <div class="project-badge">Immersive Exhibition</div>
+            <div class="project-emblem">🦖</div>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">Beijing · 1,000㎡ · Since 2024</div>
+          <h3>T.Rex Immersive Exhibition</h3>
+          <p>A journey through the Late Cretaceous period, combining paleontological accuracy with interactive RFID exploration. Visitors discover how 66-million-year-old ecosystems shaped the world we live in today.</p>
+          <div class="project-tags">
+            <span>Paleontology</span>
+            <span>Education</span>
+            <span>RFID Interactive</span>
+          </div>
+          <a href="#" class="project-link">Learn More →</a>
+        </div>
+      </article>
+      <!-- Project 2: DeepSea -->
+      <article class="project-card reveal delay-1" data-project="deepsea">
+        <div class="project-img" style="background:linear-gradient(135deg,#000307 0%,#072F4F 50%,#1A6796 100%)">
+          <div class="project-img-overlay">
+            <div class="project-badge">Conservation Program</div>
+            <div class="project-emblem">🌊</div>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">Shanghai · Multi-site · Since 2023</div>
+          <h3>Deep Sea Ark</h3>
+          <p>Large-scale immersive installations that simulate deep-sea environments, revealing the biodiversity hidden beneath the ocean surface. This multi-site program bridges marine science with public engagement.</p>
+          <div class="project-tags">
+            <span>Marine Science</span>
+            <span>Conservation</span>
+            <span>Multi-site</span>
+          </div>
+          <a href="#" class="project-link">Learn More →</a>
+        </div>
+      </article>
+      <!-- Project 3: DreamPortal -->
+      <article class="project-card reveal delay-2" data-project="dreamportal">
+        <div class="project-img" style="background:linear-gradient(135deg,#072F4F 0%,#224F6D 50%,#3E9ACA 100%)">
+          <div class="project-img-overlay">
+            <div class="project-badge">Spatial Computing</div>
+            <div class="project-emblem">🚀</div>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">Dongguan · 2,000㎡ · Since 2024</div>
+          <h3>DreamPortal</h3>
+          <p>A self-developed immersive flight simulation system exploring humanity's relationship with space. Custom hardware and spatial computing create a portal between Earth and the cosmos.</p>
+          <div class="project-tags">
+            <span>Aerospace</span>
+            <span>Spatial Computing</span>
+            <span>Custom Hardware</span>
+          </div>
+          <a href="#" class="project-link">Learn More →</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Impact Section -->
+<section class="impact" id="impact">
+  <div class="section-container">
+    <div class="section-header reveal">
+      <p class="section-label">Our Impact</p>
+      <h2 class="section-title">Building Futures in Harmony with Nature</h2>
+    </div>
+    <div class="impact-grid">
+      <div class="impact-item reveal">
+        <div class="impact-number">3B</div>
+        <p class="impact-text">Annual carbon sequestration target — equivalent to removing 650 million cars from the road every year.</p>
+      </div>
+      <div class="impact-item reveal delay-1">
+        <div class="impact-number">100M</div>
+        <p class="impact-text">People at risk from climate-related emergencies safeguarded through habitat protection.</p>
+      </div>
+      <div class="impact-item reveal delay-2">
+        <div class="impact-number">4B</div>
+        <p class="impact-text">Hectares of marine habitat conserved through protected areas and sustainable practices.</p>
+      </div>
+      <div class="impact-item reveal delay-3">
+        <div class="impact-number">45M</div>
+        <p class="impact-text">People from Indigenous and local communities supported in stewarding their environment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section class="about" id="about">
+  <div class="section-container">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p class="section-label">About Us</p>
+        <h2 class="section-title">Who We Are</h2>
+        <p class="about-desc">Earth Ark Institute is a dedicated team of scientists, architects, technologists, and storytellers working together to advance lasting conservation across 80+ countries and territories.</p>
+        <p class="about-desc">We develop breakthrough ideas, amplify local leaders, and influence policy to address the climate and biodiversity crises between now and 2030. Our projects are not one-off exhibitions but foundational experiences in a decade-long initiative to reimagine humanity's relationship with the natural world.</p>
+        <div class="about-cta">
+          <a href="#contact" class="btn btn-primary">Support Our Work</a>
+        </div>
+      </div>
+      <div class="about-visual reveal delay-2">
+        <div class="about-image">
+          <div class="about-gradient"></div>
+          <div class="about-content">
+            <p class="about-quote">"Every acre we protect and every river mile we restore begins with you."</p>
+            <p class="about-quote-attrib">— Earth Ark Institute</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
 <section class="contact" id="contact">
-  <div class="contact-box fade-in">
-    <h2>Start a Conversation</h2>
-    <p>Interested in collaborating on immersive educational experiences? We'd love to hear from you.</p>
-    <a href="mailto:info@eartharkinstitute.org" class="contact-email">info@eartharkinstitute.org</a>
+  <div class="section-container">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <p class="section-label">Get Involved</p>
+        <h2 class="section-title">Start a Conversation</h2>
+        <p class="contact-desc">Whether you want to volunteer, partner on a project, donate, or simply learn more about our work — we'd love to hear from you.</p>
+        <div class="contact-methods">
+          <div class="contact-method">
+            <span class="contact-icon">📧</span>
+            <div>
+              <h4>Email</h4>
+              <a href="mailto:info@eartharkinstitute.org" class="contact-link">info@eartharkinstitute.org</a>
+            </div>
+          </div>
+          <div class="contact-method">
+            <span class="contact-icon">📍</span>
+            <div>
+              <h4>Based in</h4>
+              <p>Shanghai, China</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form reveal delay-2">
+        <h3>Get in Touch</h3>
+        <form id="contact-form">
+          <div class="form-row">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Email Address" required>
+          </div>
+          <input type="text" placeholder="Subject" required>
+          <textarea placeholder="Your Message" rows="5" required></textarea>
+          <button type="submit" class="btn btn-primary btn-full">Send Message</button>
+        </form>
+      </div>
+    </div>
   </div>
 </section>
 
+<!-- Footer -->
 <footer>
-  <p>&copy; 2026 Earth Ark Institute. All rights reserved.</p>
-  <p class="founded">Founded by NeXT SCENE · 创见未来叙事</p>
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">EARTH ARK</div>
+        <p class="footer-tagline">A non-profit institute for immersive conservation science and education.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#mission">Our Mission</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#impact">Impact</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="#contact">Contact Us</a></li>
+          <li><a href="#">Donate</a></li>
+          <li><a href="#">Volunteer</a></li>
+          <li><a href="#">Newsletter</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Earth Ark Institute. All rights reserved.</p>
+      <p class="footer-note">Earth Ark Institute is a non-profit, tax-exempt charitable organization.</p>
+    </div>
+  </div>
 </footer>
 
-<script>
-// Ambient background particles
-const canvas = document.getElementById('bg');
-const ctx = canvas.getContext('2d');
-let W, H, particles = [];
-
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
-
-class Particle {
-  constructor() {
-    this.reset();
-  }
-  reset() {
-    this.x = Math.random() * W;
-    this.y = Math.random() * H;
-    this.size = Math.random() * 1.5 + 0.5;
-    this.speedX = (Math.random() - 0.5) * 0.3;
-    this.speedY = (Math.random() - 0.5) * 0.3;
-    this.opacity = Math.random() * 0.4 + 0.1;
-    this.hue = Math.random() * 40 + 200; // blue-purple range
-  }
-  update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `hsla(${this.hue}, 60%, 60%, ${this.opacity})`;
-    ctx.fill();
-  }
-}
-
-for (let i = 0; i < 80; i++) particles.push(new Particle());
-
-function animate() {
-  ctx.clearRect(0, 0, W, H);
-  particles.forEach(p => { p.update(); p.draw(); });
-  requestAnimationFrame(animate);
-}
-animate();
-
-// Intersection Observer for scroll animations
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-    }
-  });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.fade-in').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(30px)';
-  el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-  observer.observe(el);
-});
-
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
